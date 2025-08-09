@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: punchai-mcp-server
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - API_KEYS=your-secret-key-1,your-secret-key-2
+      - DB_PATH=data/data.db
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Uncomment this section if you want to use a PostgreSQL database instead of SQLite
+  # db:
+  #   image: postgres:14-alpine
+  #   container_name: punchai-postgres
+  #   restart: unless-stopped
+  #   environment:
+  #     - POSTGRES_USER=punchai
+  #     - POSTGRES_PASSWORD=your-secure-password
+  #     - POSTGRES_DB=punchai
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+# Uncomment this section if you want to use a PostgreSQL database
+# volumes:
+#   postgres-data:

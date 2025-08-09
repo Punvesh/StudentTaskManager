@@ -1,0 +1,44 @@
+# Render deployment configuration for PunchAI MCP Server
+
+services:
+  # Web service configuration
+  - type: web
+    name: punchai-mcp-server
+    env: node
+    plan: starter # Choose appropriate plan (starter, standard, etc.)
+    buildCommand: npm install
+    startCommand: node src/server.js
+    healthCheckPath: /health
+    # Auto-deploy on changes to main branch
+    repo: https://github.com/yourusername/punchai # Replace with your actual repository URL
+    branch: main
+    # Configure environment variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: API_KEYS
+        # For sensitive values, use Render's environment variable UI
+        # or create a secret with the sync option below
+        sync: false
+      - key: DB_PATH
+        value: data/data.db
+      - key: RATE_LIMIT_MAX
+        value: 100
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+    # Disk configuration for persistent storage
+    disk:
+      name: data
+      mountPath: /app/data
+      sizeGB: 1 # Adjust based on your needs
+
+# Uncomment this section if you want to use a PostgreSQL database
+# databases:
+#   - name: punchai-postgres
+#     plan: starter # Choose appropriate plan
+#     databaseName: punchai
+#     user: punchai
+#     # This will automatically set DATABASE_URL environment variable
+#     # You'll need to update your code to use this instead of SQLite

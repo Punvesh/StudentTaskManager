@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "punchai-task-manager": {
+      "command": "node",
+      "args": ["src/index_fixed.js"],
+      "cwd": "D:\\punchai",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}
+

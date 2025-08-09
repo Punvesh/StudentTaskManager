@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "punchai-task-manager": {
+      "command": "node",
+      "args": ["D:\\punchai\\src\\index.js"],
+      "env": {}
+    }
+  }
+}
